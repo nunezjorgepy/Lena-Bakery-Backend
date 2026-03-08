@@ -30,6 +30,11 @@ const productSchema = new mongoose.Schema({
         minlength: [10, 'La descripción debe tener al menos 10 caracteres'],
         maxlength: [1000, 'La descripción no puede exceder los 1000 caracteres'],
     },
+    precio: {
+        type: Number,
+        required: [true, 'El precio del producto es obligatorio'],
+        min: [0, 'El precio debe ser mayor o igual a 0'],
+    },
     ingredientes: [{
         nombre: {
             type: String,

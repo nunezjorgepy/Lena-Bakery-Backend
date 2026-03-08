@@ -63,13 +63,19 @@ const userSchema = new mongoose.Schema({
         enum: ["admin", "user"],
         default: "user",
     },
-    adress: {
+    direccion: {
         calle: {
             type: String,
             required: [true, "La calle es obligatoria."],
             trim: true,
             minlength: [2, "La calle debe tener al menos 2 caracteres."],
             maxlength: [50, "La calle debe tener como máximo 50 caracteres."],
+            validate: {
+                validator: function (value) {
+                    return /^[a-zA-Z0-9\s\.\-áéíóúñÁÉÍÓÚÑ]+$/.test(value);
+                },
+                message: "La calle debe contener solo letras y espacios.",
+            }
         },
         altura: {
             type: String,
