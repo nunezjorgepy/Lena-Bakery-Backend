@@ -4,10 +4,10 @@ import express from "express";
 
 const app = express();
 
-connectToMongoDB();
+/* connectToMongoDB();
 
 
 app.listen(
     ENVIROMENT.PORT,
     () => console.log(`Server running on port ${ENVIROMENT.PORT}`)
-)
+) */

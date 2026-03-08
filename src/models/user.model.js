@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
-    // Revisar las validaciones en deepseek
     nombre: {
         type: String,
         required: [true, "El nombre es obligatorio."],
