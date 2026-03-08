@@ -1,4 +1,4 @@
-import QAndA from "../models/Q&A.model";
+import QAndA from "../models/QAndA.model";
 
 class QAndARepository {
     constructor() {
