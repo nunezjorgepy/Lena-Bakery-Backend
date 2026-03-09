@@ -1,4 +1,4 @@
-import User from "../models/user.model";
+import User from "../models/user.model.js";
 
 class UserRepository {
     constructor() {
@@ -19,6 +19,13 @@ class UserRepository {
             El parámetro id es el ID del usuario a obtener
         */
         return await this.model.findById(id);
+    }
+
+    async getAllUsers() {
+        /* 
+            Obtiene todos los usuarios existentes
+        */
+        return await this.model.find({});
     }
 
     async update(id, user) {

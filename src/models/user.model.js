@@ -91,7 +91,7 @@ const userSchema = new mongoose.Schema({
             minlength: [1, "El número de piso debe tener al menos 1 dígito."],
             maxlength: [10, "El número de piso debe tener como máximo 10 dígitos."],
             match: [/^[0-9]+[A-Za-z]?$/, 'El piso debe ser un número válido'],
-            default: '',
+            default: '0',
         },
         departamento: {
             type: String,
@@ -156,7 +156,16 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: true,
     },
-    timestamps: true,
+    created_at: {
+        type: Date,
+        default: Date.now,
+        inmutable: true
+    },
+    updated_at: {
+        type: Date,
+        default: Date.now,
+        inmutable: true
+    }
 });
 
 const User = mongoose.model("User", userSchema);
