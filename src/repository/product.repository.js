@@ -14,8 +14,12 @@ class ProductRepository {
         return await Product.findById(id);
     }
 
+    async getProductByName(name) {
+        return await Product.findOne({ title: name });
+    }
+
     async updateProduct(id, product) {
-        return await Product.findByIdAndUpdate(id, product, { new: true });
+        return await Product.findByIdAndUpdate(id, product, { returnDocument: 'after' });
     }
 
     async deleteProduct(id) {
@@ -25,12 +29,12 @@ class ProductRepository {
 
     async softDeleteProduct(id) {
         // Borrado lógico. Al no estar activo, no se muestr en la página, pero se puede recuperar.
-        return await Product.findByIdAndUpdate(id, { isActive: false }, { new: true });
+        return await Product.findByIdAndUpdate(id, { isActive: false }, { returnDocument: 'after' });
     }
 
     async restoreProduct(id) {
         // Restaurar un producto borrado lógicamente
-        return await Product.findByIdAndUpdate(id, { isActive: true }, { new: true });
+        return await Product.findByIdAndUpdate(id, { isActive: true }, { returnDocument: 'after' });
     }
 }
 

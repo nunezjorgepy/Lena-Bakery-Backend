@@ -18,6 +18,26 @@ productRouter.post(
     productController.createProduct
 );
 
+productRouter.put(
+    "/:id", 
+    productController.updateProduct
+);
+
+productRouter.delete(
+    "/:id", 
+    productController.deleteProduct
+);
+
+productRouter.patch(
+    "/:id/soft-delete", 
+    productController.softDeleteProduct
+);
+
+productRouter.patch(
+    "/:id/restore", 
+    productController.restoreProduct
+);
+
 /* 
 productRouter.put(
     "/:id", 

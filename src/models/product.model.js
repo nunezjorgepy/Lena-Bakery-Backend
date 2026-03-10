@@ -22,7 +22,6 @@ const productSchema = new mongoose.Schema({
         minlength: [3, 'El nombre debe tener al menos 3 caracteres'],
         maxlength: [100, 'El nombre no puede exceder los 100 caracteres'],
         unique: true,
-        uniqueCaseInsensitive: true // Ignorar mayúsculas/minúsculas para la unicidad
     },
     description: {
         type: String,
@@ -44,16 +43,17 @@ const productSchema = new mongoose.Schema({
             minlength: [3, 'El nombre debe tener al menos 3 caracteres'],
             maxlength: [100, 'El nombre no puede exceder los 100 caracteres'],
             unique: true, // Asumiendo que los nombres de ingredientes son únicos
-            uniqueCaseInsensitive: true // Ignorar mayúsculas/minúsculas para la unicidad
         },
         quantity: {
             type: Number,
             required: [true, 'La cantidad del ingrediente es obligatoria'],
             min: [0, 'La cantidad debe ser mayor o igual a 0'],
-            validate: function(value) {
-                return value < 0 || (value === 0 && this.notas);
-            },
-            message: 'La cantidad debe ser mayor o igual a 0 si no hay notas'
+            validate: {
+                validator: function(value) {
+                    return value > 0 || (value === 0 && this.notes);
+                },
+                message: 'La cantidad debe ser mayor a 0 si no hay notas'
+            }
         },
         unit: {
             type: String,
@@ -62,7 +62,6 @@ const productSchema = new mongoose.Schema({
                 values: ['g', 'kg', 'ml', 'l', 'unidad', 'cucharada', 'cucharadita', 'taza', 'pizca', 'al gusto'],
                 message: '{VALUE} no es una unidad válida'
             },
-            uppercase: true, // Normalizar a mayúsculas
             trim: true
         },
         notes: {
@@ -99,7 +98,6 @@ const productSchema = new mongoose.Schema({
                 values: ['g', 'mg', 'mcg', 'kcal', 'kJ', 'IU', '%'],
                 message: '{VALUE} no es una unidad nutricional válida'
             },
-            uppercase: true,
             trim: true
         },
         reference_portion: {
@@ -123,12 +121,12 @@ const productSchema = new mongoose.Schema({
     created_at: {
         type: Date,
         default: Date.now,
-        inmutable: true
+        immutable: true
     },
     updated_at: {
         type: Date,
         default: Date.now,
-        inmutable: true
+        immutable: true
     }
     // TODO: cómo revisar si hay algún producto que tenga menos de una semana para el pop-up
 })
