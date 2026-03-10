@@ -1,42 +1,43 @@
 import mongoose from "mongoose";
 
 const productSchema = new mongoose.Schema({
-    foto: {
+    /* TODO: photo tendría que se una lista de fotos */
+    main_photo: {
         type: String,
         required: [true, "La foto es obligatoria."],
         trim: true,
-        validate: {
+        /* validate: {
             validator: function (value) {
                 return /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp|svg|bmp))($|\?)/i.test(value) ||
                 /^data:image\/[a-z]+;base64,/.test(value);
             },
             message: 'La URL de la foto debe ser válida.'
-        },
+        }, */
         maxlength: [1000, "La URL de la foto debe tener como máximo 1000 caracteres."],
     },
-    nombre: {
+    title: {
         type: String,
         required: [true, 'El nombre del producto es obligatorio'],
         trim: true,
         minlength: [3, 'El nombre debe tener al menos 3 caracteres'],
         maxlength: [100, 'El nombre no puede exceder los 100 caracteres'],
-        unique: true, // Asumiendo que los nombres de productos son únicos
+        unique: true,
         uniqueCaseInsensitive: true // Ignorar mayúsculas/minúsculas para la unicidad
     },
-    descripcion: {
+    description: {
         type: String,
         required: [true, 'La descripción del producto es obligatoria'],
         trim: true,
         minlength: [10, 'La descripción debe tener al menos 10 caracteres'],
         maxlength: [1000, 'La descripción no puede exceder los 1000 caracteres'],
     },
-    precio: {
+    price: {
         type: Number,
         required: [true, 'El precio del producto es obligatorio'],
         min: [0, 'El precio debe ser mayor o igual a 0'],
     },
-    ingredientes: [{
-        nombre: {
+    ingredients: [{
+        name: {
             type: String,
             required: [true, 'El nombre del ingrediente es obligatorio'],
             trim: true,
@@ -45,7 +46,7 @@ const productSchema = new mongoose.Schema({
             unique: true, // Asumiendo que los nombres de ingredientes son únicos
             uniqueCaseInsensitive: true // Ignorar mayúsculas/minúsculas para la unicidad
         },
-        cantidad: {
+        quantity: {
             type: Number,
             required: [true, 'La cantidad del ingrediente es obligatoria'],
             min: [0, 'La cantidad debe ser mayor o igual a 0'],
@@ -54,7 +55,7 @@ const productSchema = new mongoose.Schema({
             },
             message: 'La cantidad debe ser mayor o igual a 0 si no hay notas'
         },
-        unidad: {
+        unit: {
             type: String,
             required: [true, 'La unidad de medida es obligatoria'],
             enum: {
@@ -64,15 +65,15 @@ const productSchema = new mongoose.Schema({
             uppercase: true, // Normalizar a mayúsculas
             trim: true
         },
-        notas: {
+        notes: {
             type: String,
             trim: true,
             maxlength: [200, 'Las notas no pueden exceder los 200 caracteres'],
             default: ''
         }
     }],
-    informacion_nutricional: [{
-        nombre: {
+    nutritional_information: [{
+        name: {
             type: String,
             required: [true, 'El nombre del componente nutricional es obligatorio'],
             trim: true,
@@ -86,12 +87,12 @@ const productSchema = new mongoose.Schema({
                 message: '{VALUE} no es un componente nutricional válido'
             }
         },
-        cantidad: {
+        quantity: {
             type: Number,
             required: [true, 'La cantidad del componente nutricional es obligatoria'],
             min: [0, 'La cantidad debe ser mayor o igual a 0']
         },
-        unidad: {
+        unit: {
             type: String,
             required: [true, 'La unidad de medida es obligatoria'],
             enum: {
@@ -101,7 +102,7 @@ const productSchema = new mongoose.Schema({
             uppercase: true,
             trim: true
         },
-        porcion_referencia: {
+        reference_portion: {
             type: String,
             required: [true, 'La porción de referencia es obligatoria'],
             trim: true,
@@ -119,7 +120,16 @@ const productSchema = new mongoose.Schema({
         type: Boolean,
         default: true,
     },
-    timestamps: true
+    created_at: {
+        type: Date,
+        default: Date.now,
+        inmutable: true
+    },
+    updated_at: {
+        type: Date,
+        default: Date.now,
+        inmutable: true
+    }
     // TODO: cómo revisar si hay algún producto que tenga menos de una semana para el pop-up
 })
 

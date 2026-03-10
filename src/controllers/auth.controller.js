@@ -4,6 +4,7 @@ import userRepository from "../repository/user.repository.js";
 class AuthController {
     async register(req, res) {
         const user = req.body;
+        console.log(user);
 
         try {
 
@@ -39,7 +40,7 @@ class AuthController {
             console.log(error);
             return res.status(500).json({
                 ok: false,
-                message: "Error creating user",
+                message: "Error al crear usuario",
                 status: 500
             })
         }
