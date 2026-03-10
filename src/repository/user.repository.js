@@ -36,6 +36,30 @@ class UserRepository {
         */
         return await this.model.findByIdAndUpdate(id, user, { new: true });
     }
+
+    getUserByName(nombre) {
+        /* 
+            Obtiene un usuario existente por su nombre
+            El parámetro name es el nombre del usuario a obtener
+        */
+        return this.model.findOne({ nombre });
+    }
+
+    getByEmail(email) {
+        /* 
+            Obtiene un usuario existente por su email
+            El parámetro email es el email del usuario a obtener
+        */
+        return this.model.findOne({ email });
+    }
+
+    getByPhone(phone) {
+        /* 
+            Obtiene un usuario existente por su telefono
+            El parámetro phone es el telefono del usuario a obtener
+        */
+        return this.model.findOne({ phone });
+    }
 }
 
 const userRepository = new UserRepository();

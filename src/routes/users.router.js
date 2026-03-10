@@ -3,7 +3,6 @@ import userController from "../controllers/users.controller.js";
 
 /*
     TODO: 
-        - Crear los controladores de los endpoints
         - No olidar las validaciones necesarias (autenticación, autorización, etc.)
 */
 
@@ -19,14 +18,9 @@ userRouter.get(
     userController.getUserById
 );
 
-userRouter.post(
-    "/", 
-    userController.createUser
-);
-
 userRouter.put(
     "/:id", 
-    /* Este endpoint funciona para modificar cualquier dato del usuario, incluso password y isActive, aunque quierorevisar si conviene así o si conviene en un endpoint aparte. */
+    /* TODO: Este endpoint funciona para modificar cualquier dato del usuario, incluso passwordpero en realidad esto hay que hacerlo en un endpoint separado. */
     userController.updateUser
 );
 
