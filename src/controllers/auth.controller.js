@@ -15,7 +15,7 @@ class AuthController {
             }
 
             /* Ahora lo mismo, pero por telefono */
-            const userByPhone = await userRepository.getByPhone(user.telefono);
+            const userByPhone = await userRepository.getByPhone(user.phone);
             if (userByPhone) {
                 console.log(userByPhone);
                 throw new ServerError("Teléfono ya registrado", 400);
@@ -50,16 +50,20 @@ class AuthController {
         const {email, password} = req.body;
 
         try {
-            // Buscar al usuario por email
-            const userFound = await userRepository.getByEmail(email);
-
+            // Buscar al usuario por email y agrega la contraseña, SOLAMENTE para este caso.
+            /* 
+                Recordar que en el modelo el select es false por defecto, por lo que no se muestra la contraseña en las respuestas.
+            */
+            // TODO: Revisar si es el mejor método. Seguramente lo veamos en clases.
+            const userFound = await userRepository.getByEmail(email).select("password");
+            
             // Si no lo encuentro, devolver un error
             if (!userFound) {
-                throw new ServerError("Email o password incorrecto", 404);
+                throw new ServerError("Email no encontrado", 404);
             }
 
             // Si lo encuentro, verificar la contraseña
-            if (userFound.password !== password) {
+            if (!userFound.password || userFound.password !== password) {
                 throw new ServerError("Email o password incorrecto", 401);
             }
 

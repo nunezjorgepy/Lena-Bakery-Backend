@@ -1,27 +1,6 @@
 import userRepository from "../repository/user.repository.js";
 
 class UserController {
-    async createUser(req, res) {
-        const user = req.body;
-
-        try {
-            const userCreated = await userRepository.create(user);
-            return res.status(201).json({
-                message: "User created successfully",
-                status: 201,
-                data: {
-                    userCreated
-                }
-            });
-        } catch (error) {
-            /* TODO: revisar si el error es correcto */
-            console.log(error);
-            return res.status(500).json({
-                message: "Error creating user",
-                status: 500
-            })
-        }
-    }
 
     async getAllUsers(req, res) {
         /* 
