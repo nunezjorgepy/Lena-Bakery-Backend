@@ -50,7 +50,7 @@ const userSchema = new mongoose.Schema({
         required: [true, "La contraseña es obligatoria."],
         trim: true,
         minlength: [8, "La contraseña debe tener al menos 8 caracteres."],
-        maxlength: [50, "La contraseña debe tener como máximo 50 caracteres."],
+        maxlength: [255, "La contraseña debe tener como máximo 50 caracteres."],
         match: [
             /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
             "La contraseña debe contener al menos una mayúscula, una minúscula, un número y un carácter especial.",

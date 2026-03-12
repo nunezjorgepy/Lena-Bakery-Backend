@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
-import ENVIROMENT from "./enviroment.config.js";
+import ENVIRONMENT from "./environment.config.js";
 
 async function connectToMongoDB() {
     try {
-        await mongoose.connect(ENVIROMENT.MONGO_DB_CONNECTION_STRING);
+        await mongoose.connect(ENVIRONMENT.MONGO_DB_CONNECTION_STRING);
         console.log("Connected to MongoDB");
     } catch (error) {
         console.error("Error connecting to MongoDB:", error);

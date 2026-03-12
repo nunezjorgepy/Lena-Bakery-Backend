@@ -1,5 +1,5 @@
 import connectToMongoDB from "./config/mongoDB.config.js";
-import ENVIROMENT from "./config/enviroment.config.js";
+import ENVIRONMENT from "./config/environment.config.js";
 import express from "express";
 import userRouter from "./routes/users.router.js";
 import authRouter from "./routes/auth.router.js";
@@ -17,6 +17,6 @@ app.use('/api/orders', orderRouter);
 connectToMongoDB();
 
 app.listen(
-    ENVIROMENT.PORT,
-    () => console.log(`Server running on port ${ENVIROMENT.PORT}`)
+    ENVIRONMENT.PORT,
+    () => console.log(`Server running on port ${ENVIRONMENT.PORT}`)
 )

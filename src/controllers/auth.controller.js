@@ -1,28 +1,14 @@
 import ServerError from "../helper/error.helper.js";
-import userRepository from "../repository/user.repository.js";
+import authService from "../services/auth.service.js";
 
 class AuthController {
     async register(req, res) {
-        const user = req.body;
-        console.log(user);
+        const userData = req.body;
 
         try {
 
-            /* Buscar al usuario por email y, si existe, devolver un error con status 400 */
-            const userByEmail = await userRepository.getByEmail(user.email);
-            if (userByEmail) {
-                throw new ServerError("Email ya registrado", 400);
-            }
+            await authService.registerUser(userData);
 
-            /* Ahora lo mismo, pero por telefono */
-            const userByPhone = await userRepository.getByPhone(user.phone);
-            if (userByPhone) {
-                console.log(userByPhone);
-                throw new ServerError("Teléfono ya registrado", 400);
-            }
-
-            // Si no existe usuario con ese mail o telefono, crearlo
-            await userRepository.create(user);
             return res.status(201).json({
                 ok: true,
                 message: "Usuario creado con éxito",
@@ -50,27 +36,25 @@ class AuthController {
         const {email, password} = req.body;
 
         try {
-            // Buscar al usuario por email y agrega la contraseña, SOLAMENTE para este caso.
             /* 
-                Recordar que en el modelo el select es false por defecto, por lo que no se muestra la contraseña en las respuestas.
+                Consultar si es mejor usar select:false en el modelo o si es mejor usar select:false en el query.
+                Por ahora lo dejo en el query.
             */
-            // TODO: Revisar si es el mejor método. Seguramente lo veamos en clases.
-            const userFound = await userRepository.getByEmail(email).select("password");
-            
-            // Si no lo encuentro, devolver un error
-            if (!userFound) {
-                throw new ServerError("Email no encontrado", 404);
-            }
-
-            // Si lo encuentro, verificar la contraseña
-            if (!userFound.password || userFound.password !== password) {
-                throw new ServerError("Email o password incorrecto", 401);
-            }
+            const {user, auth_token} = await authService.loginUser({email, password});
 
             // Si lo encuentro y la contraseña es correcta, devolver un 200
             return res.status(200).json({
                 message: "Usuario logueado con éxito",
                 status: 200,
+                user: {
+                    userId: user._id,
+                    name: user.name,
+                    email: user.email,
+                    phone: user.phone,
+                    role: user.role,
+                    address: user.address,
+                },
+                auth_token
             });
             
             
