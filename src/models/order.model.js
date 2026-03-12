@@ -9,7 +9,8 @@ const orderSchema = new mongoose.Schema({
     status: {
         type: String,
         required: [true, "El estado de la orden es obligatorio."],
-        enum: ["pendiente", "preparado", "enviado", "recibido", "cancelado"],
+        enum: ["pendiente", "preparando", "preparado", "enviado", "recibido", "cancelado"],
+        default: "pendiente",
         index: true
     },
     items: {

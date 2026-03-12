@@ -1,6 +1,7 @@
 import userRepository from "../repository/user.repository.js";
 
 class UserController {
+    // TODO: agregar validaciones de que el usuario exista
 
     async getAllUsers(req, res) {
         /* 

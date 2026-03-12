@@ -1,4 +1,4 @@
-import Order from "../models/order.model";
+import Order from "../models/order.model.js";
 /* 
     La orden tiene los siguientes métodos:
         - create
@@ -48,7 +48,7 @@ class OrderRepository {
         return await this.model.findByIdAndDelete(id);
     }
 
-    async searchByStatus(status) {
+    async getOrdersByStatus(status) {
         /* 
             Busca ordenes por estado
             status es el estado de la orden a buscar

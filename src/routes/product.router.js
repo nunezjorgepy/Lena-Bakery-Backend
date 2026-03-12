@@ -38,25 +38,4 @@ productRouter.patch(
     productController.restoreProduct
 );
 
-/* 
-productRouter.put(
-    "/:id", 
-    productController.updateProduct
-);
-
-productRouter.delete(
-    "/:id", 
-    productController.deleteProduct
-);
-
-productRouter.patch(
-    "/:id", 
-    productController.softDeleteProduct
-);
-
-productRouter.put(
-    "/:id", 
-    productController.restoreProduct
-); */
-
 export default productRouter;
