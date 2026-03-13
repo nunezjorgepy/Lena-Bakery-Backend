@@ -158,8 +158,8 @@ const userSchema = new mongoose.Schema({
         default: true,
     },
     isVerified: {
-        type: Boolean,
-        default: false,
+        type: null || Date,
+        default: null,
     },
     verification_token: {
         type: String,
