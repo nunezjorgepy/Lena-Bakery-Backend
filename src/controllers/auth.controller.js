@@ -75,6 +75,35 @@ class AuthController {
             })
         }
     }
+
+    async verifyEmail(req, res) {
+        const { verification_token } = req.query;
+
+        try {
+            await authService.verifyEmail({ verification_token });
+
+            return res.status(200).json({
+                ok: true,
+                message: "Email verificado con éxito",
+                status: 200,
+            });
+        } catch (error) {
+            console.log(error);
+            if (error instanceof ServerError) {
+                return res.status(error.status).json({
+                    ok: false,
+                    message: error.message,
+                    status: error.status
+                })
+            }
+
+            return res.status(500).json({
+                ok: false,
+                message: "Error al verificar email",
+                status: 500
+            })
+        }
+    }
 }
 
 const authController = new AuthController();

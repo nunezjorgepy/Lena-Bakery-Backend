@@ -50,7 +50,7 @@ class AuthService {
                 { expiresIn: "24h" }
             );
 
-            const verify_link = `${ENVIRONMENT.URL_BACKEND}/api/auth/verify-email?token=${verify_email_token}`;
+            const verify_link = `${ENVIRONMENT.URL_BACKEND}/api/auth/verify-email?verification_token=${verify_email_token}`;
 
             const mailOptions = {
                 from: 'Lena Bakery <no-reply@lenabakery.com>',
@@ -65,6 +65,39 @@ class AuthService {
 
             await mailerTransporter.sendMail(mailOptions);
         } catch (error) {
+            throw error;
+        }
+    }
+
+    async verifyEmail({ verification_token }) {
+        if (!verification_token) {
+            throw new ServerError("Token de verificación no proporcionado");
+        }
+
+        try {
+            const { email } = jwt.verify(verification_token, ENVIRONMENT.JWT_SECRET);
+
+            // Busco al usuario
+            const user = await userRepository.getByEmail(email);
+            if (!user) {
+                throw new ServerError("Usuario no encontrado", 404);
+            }
+
+            // Verifico que no esté verificado
+            if (user.isVerified) {
+                throw new ServerError("Usuario ya verificado", 400);
+            }
+
+            user.isVerified = Date.now();
+            user.verification_token = undefined;
+            await user.save();
+        } catch (error) {
+            if (error instanceof jwt.TokenExpiredError) {
+                // TODO: Debería enviar un nuevo token al usuario.
+                throw new ServerError("Token de verificación expirado", 401);
+            } else if (error instanceof jwt.JsonWebTokenError) {
+                throw new ServerError("Token de verificación inválido", 401);
+            }
             throw error;
         }
     }
