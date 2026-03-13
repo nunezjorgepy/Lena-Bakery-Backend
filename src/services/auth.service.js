@@ -20,10 +20,13 @@ class AuthService {
                 throw new ServerError("Teléfono ya registrado", 400);
             }
 
-            // Hash the password
-            const salt = await bcrypt.genSalt(12);
-            const hashedPassword = await bcrypt.hash(userData.password, salt);
-            userData.password = hashedPassword;
+            // Generate verification_token. Esto podría ser una función aparte.
+            const verificationToken = jwt.sign(
+                { id: userData._id, email: userData.email },
+                ENVIRONMENT.JWT_SECRET,
+                { expiresIn: "24h" }
+            );
+            userData.verification_token = verificationToken;
 
             const user = await userRepository.create(userData);
 

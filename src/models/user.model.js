@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -156,6 +157,18 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: true,
     },
+    isVerified: {
+        type: Boolean,
+        default: false,
+    },
+    verification_token: {
+        type: String,
+        default: null,
+    },
+    verification_token_expires_at: {
+        type: Date,
+        default: () => new Date(Date.now() + 60 * 60 * 1000),
+    },
     created_at: {
         type: Date,
         default: Date.now,
@@ -167,6 +180,25 @@ const userSchema = new mongoose.Schema({
         inmutable: true
     }
 });
+
+userSchema.pre("save", async function () {
+    if (!this.isModified("password")) {
+        return;
+    }
+
+    this.password = await bcrypt.hash(this.password, 12);
+});
+
+userSchema.methods.comparePassword = async function (password) {
+    return await bcrypt.compare(password, this.password);
+}
+
+// Índice TTL para limpiar usuarios no verificados después de 24 horas
+userSchema.index(
+    { verification_token_expires_at: 1 },
+    { expireAfterSeconds: 86400 },
+    { partialFilterExpression: { isVerified: false } }
+);
 
 const User = mongoose.model("User", userSchema);
 
