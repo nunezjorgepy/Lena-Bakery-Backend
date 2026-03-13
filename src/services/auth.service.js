@@ -34,7 +34,7 @@ class AuthService {
 
             const user = await userRepository.create(userData);
 
-            await this.sendVerificationEmail(user.email);
+            await this.sendVerificationEmail({email: user.email});
 
             return user;
         } catch (error) {
@@ -42,7 +42,7 @@ class AuthService {
         }
     }
 
-    async sendVerificationEmail(email) {
+    async sendVerificationEmail({email}) {
         try {
             const verify_email_token = jwt.sign(
                 { email },
@@ -109,13 +109,23 @@ class AuthService {
 
             // If the user is not found, throw an error
             if (!user) {
-                throw new ServerError("Usuario no encontrado");
+                throw new ServerError("Usuario no encontrado", 401);
             }
 
             // Compare the password
             const isPasswordValid = await bcrypt.compare(userData.password, user.password);
             if (!isPasswordValid) {
-                throw new ServerError("Contraseña incorrecta");
+                throw new ServerError("Contraseña incorrecta", 401);
+            }
+
+            // Verifico si el usuario esta activo
+            if (!user.isActive) {
+                throw new ServerError("Usuario inactivo", 403);
+            }
+
+            // Verifico si el usuario esta verificado
+            if (!user.isVerified) {
+                throw new ServerError("Usuario no verificado", 403);
             }
 
             user.password = undefined;
