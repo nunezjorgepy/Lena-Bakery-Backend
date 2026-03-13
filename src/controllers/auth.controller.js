@@ -40,7 +40,7 @@ class AuthController {
                 Consultar si es mejor usar select:false en el modelo o si es mejor usar select:false en el query.
                 Por ahora lo dejo en el query.
             */
-            const {user, auth_token} = await authService.loginUser({email, password});
+            const {user, login_token} = await authService.loginUser({email, password});
 
             // Si lo encuentro y la contraseña es correcta, devolver un 200
             return res.status(200).json({
@@ -54,7 +54,7 @@ class AuthController {
                     role: user.role,
                     address: user.address,
                 },
-                auth_token
+                login_token
             });
             
             

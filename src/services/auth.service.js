@@ -131,8 +131,8 @@ class AuthService {
             user.password = undefined;
 
             // Generate a token
-            const token = jwt.sign({ id: user._id }, ENVIRONMENT.JWT_SECRET, { expiresIn: "1h" });
-            return { user, token };
+            const login_token = jwt.sign({ id: user._id }, ENVIRONMENT.JWT_SECRET, { expiresIn: "1h" });
+            return { user, login_token };
         } catch (error) {
             throw error;
         }
