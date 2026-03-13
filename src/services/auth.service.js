@@ -50,13 +50,15 @@ class AuthService {
                 { expiresIn: "24h" }
             );
 
+            const verify_link = `${ENVIRONMENT.URL_BACKEND}/api/auth/verify-email?token=${verify_email_token}`;
+
             const mailOptions = {
                 from: 'Lena Bakery <no-reply@lenabakery.com>',
                 to: email,
                 subject: 'Verificación de correo electrónico',
                 html: `
                     <h1> Verificación de correo electrónico</h1>
-                    <p>Te has registrado en Lena Bakery. Por favor, verifica tu correo electrónico para confirmar tu cuenta. Haga clic en el siguiente enlace: <a href="${ENVIRONMENT.URL_BACKEND}/api/auth/verify-email?token=${verify_email_token}">Verificar correo</a></p>
+                    <p>Te has registrado en Lena Bakery. Por favor, verifica tu correo electrónico para confirmar tu cuenta. Haga clic en el siguiente enlace: <a href="${verify_link}">Verificar correo</a></p>
                     <p>Si no has solicitado esta verificación, por favor, ignora este correo.</p>
                 `,
             };
