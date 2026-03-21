@@ -1,11 +1,11 @@
 import express from "express";
 import orderController from "../controllers/order.controller.js";
 
-const OrderRouter = express.Router();
+const orderRouter = express.Router();
 
-OrderRouter.post(
+orderRouter.post(
     "/",
     orderController.createOrder
 );
 
-export default OrderRouter;
+export default orderRouter;
