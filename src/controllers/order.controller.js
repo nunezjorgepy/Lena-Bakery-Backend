@@ -1,4 +1,6 @@
+import ServerError from "../helper/error.helper.js";
 import orderRepository from "../repository/order.repository.js";
+import orderService from "../services/order.service.js";
 
 class OrderController {
 
@@ -6,7 +8,8 @@ class OrderController {
         const order = req.body;
 
         try {
-            const orderCreated = await orderRepository.create(order);
+            const orderCreated = await orderService.createOrder(order);
+            
             return res.status(200).json({
                 message: "Order created successfully",
                 status: 200,

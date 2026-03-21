@@ -28,6 +28,7 @@ const orderSchema = new mongoose.Schema({
         }
     ],
     items: [
+        // El producto podría tener el nombre, que viene de la colección de productos. De esta forma, no guardo una referencia a la colección de productos. De esta forma, si el producto cambia de nombre o se elimina, la orden no se ve afectada.
         {
             product: {
                 type: mongoose.Schema.Types.ObjectId,
@@ -98,13 +99,13 @@ const orderSchema = new mongoose.Schema({
         type: String,
         required: [true, "El telefono es obligatorio."],
         trim: true,
+        // Validar que el teléfono tenga extactamente 10 caracteres
         validate: {
-            // Validar que sea formato argentino
             validator: function (value) {
-                return /^\+54\d{9}$/.test(value);
+                return /^\d{10}$/.test(value);
             },
-            message: "El telefono debe ser de formato argentino."
-        }
+            message: "El telefono debe tener extactamente 10 caracteres."
+        },
     },
     address: {
         street: {
@@ -134,7 +135,7 @@ const orderSchema = new mongoose.Schema({
             minlength: [1, "El número de piso debe tener al menos 1 dígito."],
             maxlength: [10, "El número de piso debe tener como máximo 10 dígitos."],
             match: [/^[0-9]+[A-Za-z]?$/, 'El piso debe ser un número válido'],
-            default: '',
+            default: '0',
         },
         department: {
             type: String,
