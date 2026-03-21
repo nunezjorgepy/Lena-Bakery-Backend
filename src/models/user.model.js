@@ -154,10 +154,12 @@ const userSchema = new mongoose.Schema({
         required: [true, "La fecha de nacimiento es obligatoria."],
     },
     isActive: {
+        // Se usa cuando: esta de vacaciones, esta ausente, se encuentra modificando los productos (evita que el cliente haga una compra desactualizada), ...
         type: Boolean,
         default: true,
     },
     isVerified: {
+        // Se usa cuando: el usuario se ha verificado su correo electrónico
         type: null || Date,
         default: null,
     },

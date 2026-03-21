@@ -1,37 +1,98 @@
 import mongoose from "mongoose";
-/* 
-La orden tendrá las siguientes características:
-    - estado: verifica que sea de tipo Strnig, requerido y que los poisbles valrores sean pendiente, preparado, enviado, recibido, cancelado
-    - fecha: verifica que sea de tipo Date, requerido y que se la fecha actual
-*/
+
+// Pasar esta constante a un archivo de constantes
+const status_options = ["pendiente", "preparando", "preparado", "enviado", "entregado", "cancelado", "rechazado"];
 
 const orderSchema = new mongoose.Schema({
     status: {
         type: String,
         required: [true, "El estado de la orden es obligatorio."],
-        enum: ["pendiente", "preparando", "preparado", "enviado", "recibido", "cancelado"],
+        enum: status_options,
         default: "pendiente",
         index: true
     },
-    items: {
-        product: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "Product",
-            required: [true, "El producto es obligatorio."],
-            validate: {
-                validator: async function (value) {
-                    const product = await mongoose.model("Product").findById(value);
-                    return product !== null && product.isActive;
-                },
-                message: "El producto no existe o no esta disponible."
+    status_history: [
+        {
+            status: {
+                type: String,
+                required: [true, "El estado de la orden es obligatorio."],
+                enum: status_options,
+                default: "pendiente",
+                index: true
             },
-        },
-        quantity: {
+            date: {
+                type: Date,
+                default: Date.now,
+                index: true
+            }
+        }
+    ],
+    items: [
+        {
+            product: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Product",
+                required: [true, "El producto es obligatorio."],
+                validate: {
+                    validator: async function (value) {
+                        const product = await mongoose.model("Product").findById(value);
+                        return product !== null && product.isActive;
+                    },
+                    message: "El producto no existe o no esta disponible."
+                },
+            },
+            quantity: {
+                type: Number,
+                required: [true, "La cantidad es obligatoria."],
+                min: [1, "La cantidad debe ser mayor o igual a 1."],
+                validate: {
+                    validator: function (value) {
+                        return Number.isInteger(value);
+                    },
+                    message: "La cantidad debe ser un entero."
+                },
+                index: true
+            },
+            price: {
+                // Se obtiene de la colección Products, pero no se actualiza si el precio cambia (el cliente debe pagar lo que sale al momento de la compra)
+                type: Number,
+                required: [true, "El precio es obligatorio."],
+                index: true
+            },
+            subtotal: {
+                // El subtotal es el precio por la cantidad
+                type: Number,
+                required: [true, "El subtotal es obligatorio."],
+                index: true
+            }
+        }
+    ],
+    // Agregar resumen de la compra, con los campos subtotal, costo de envío y total
+    purchase_summary: {
+        subtotal: {
             type: Number,
-            required: [true, "La cantidad es obligatoria."],
-            min: [1, "La cantidad debe ser mayor o igual a 1."],
+            required: [true, "El subtotal es obligatorio."],
+            index: true
+        },
+        shipping_cost: {
+            type: Number,
+            required: [true, "El costo de envio es obligatorio."],
+            default: 0,
+            index: true
+        },
+        total: {
+            type: Number,
+            required: [true, "El total es obligatorio."],
             index: true
         }
+    },
+    name: {
+        /* Agrego el nombre del comprador, pero no es un Usuario. Puede agregar el nombre completo en el campo (es decir, nombre + apellido) */
+        type: String,
+        required: [true, "El nombre es obligatorio."],
+        trim: true,
+        minlength: [2, "El nombre debe tener al menos 2 caracteres."],
+        maxlength: [50, "El nombre debe tener como máximo 50 caracteres."],
     },
     phone: {
         type: String,
@@ -113,13 +174,11 @@ const orderSchema = new mongoose.Schema({
             maxlength: [10, "El codigo postal debe tener como máximo 10 caracteres."],
         },
     },
-    /* Agrego el nombre del comprador, pero no es un Usuario. Puede agregar el nombre completo en el campo (es decir, nombre + apellido) */
-    name: {
+    notes: {
         type: String,
-        required: [true, "El nombre es obligatorio."],
         trim: true,
-        minlength: [2, "El nombre debe tener al menos 2 caracteres."],
-        maxlength: [50, "El nombre debe tener como máximo 50 caracteres."],
+        maxlength: [500, "Las notas no pueden exceder los 500 caracteres."],
+        default: '',
     },
     createdAt: {
         type: Date,
