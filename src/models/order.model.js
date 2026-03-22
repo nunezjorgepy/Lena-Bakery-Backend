@@ -1,14 +1,12 @@
 import mongoose from "mongoose";
-
-// Pasar esta constante a un archivo de constantes
-const status_options = ["pendiente", "preparando", "preparado", "enviado", "entregado", "cancelado", "rechazado"];
+import { ORDER_STATUS, ORDER_STATUS_OPTIONS } from "../config/orderStatus.config.js";
 
 const orderSchema = new mongoose.Schema({
     status: {
         type: String,
         required: [true, "El estado de la orden es obligatorio."],
-        enum: status_options,
-        default: "pendiente",
+        enum: ORDER_STATUS_OPTIONS,
+        default: ORDER_STATUS.PENDING,
         index: true
     },
     status_history: [
@@ -16,8 +14,8 @@ const orderSchema = new mongoose.Schema({
             status: {
                 type: String,
                 required: [true, "El estado de la orden es obligatorio."],
-                enum: status_options,
-                default: "pendiente",
+                enum: ORDER_STATUS_OPTIONS,
+                default: ORDER_STATUS.PENDING,
                 index: true
             },
             date: {
