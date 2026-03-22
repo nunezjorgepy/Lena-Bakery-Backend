@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import ServerError from "../helper/error.helper.js";
 import orderRepository from "../repository/order.repository.js";
+import { ORDER_STATUS_OPTIONS } from "../config/orderStatus.config.js";
 
 
 class OrderService {
@@ -85,15 +86,27 @@ class OrderService {
         }
     }
 
-    // Comento las funciones que no se usan por ahora
-/*     async getOrdersByStatus(status) {
+    async getOrdersByStatus(status) {
         try {
+            /* 
+                TODO: faltan unas cuantas verificaciones, pero todavía no entiendo cómo implementarlas.
+            */
+            if (!status) {
+                throw new ServerError("Estado no proporcionado", 400);
+            }
+
+            if (!ORDER_STATUS_OPTIONS.includes(status)) {
+                throw new ServerError("Estado inválido", 400);
+            }
+
             const orders = await orderRepository.getOrdersByStatus(status);
             return orders;
         } catch (error) {
+            console.log(error);
             throw error;
         }
-    } */
+    }
+    // Comento las funciones que no se usan por ahora
 
 /*     async updateOrder(id, orderData) {
         try {

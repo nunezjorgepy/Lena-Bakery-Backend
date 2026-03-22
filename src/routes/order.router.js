@@ -19,4 +19,10 @@ orderRouter.get(
     orderController.getOrderById
 );
 
+// Getting orders by status
+orderRouter.get(
+    "/status/:status",
+    orderController.getOrdersByStatus
+);
+
 export default orderRouter;

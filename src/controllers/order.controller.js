@@ -63,7 +63,7 @@ class OrderController {
         const { status } = req.params;
 
         try {
-            const orders = await orderRepository.getOrdersByStatus(status);
+            const orders = await orderService.getOrdersByStatus(status);
             return res.status(200).json({
                 message: "Orders retrieved successfully",
                 status: 200,

@@ -64,11 +64,6 @@ class OrderRepository {
     }
 
     async getOrdersByStatus(status) {
-        /* 
-            Busca ordenes por estado
-            status es el estado de la orden a buscar
-            La idea es que pueda buscar cuáles ordenes todavía no fueron entregadas, preparadas, enviadas, recibidas o canceladas
-        */
         return await this.model.find({ status });
     }
 
