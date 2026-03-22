@@ -106,6 +106,35 @@ class OrderService {
             throw error;
         }
     }
+
+    async deleteOrder(id) {
+        try {
+            /* 
+                TODO: faltan unas cuantas verificaciones, pero todavía no entiendo cómo implementarlas.
+                Por ahora, esos son todos, aunque más adelante estaría bueno implementar errores de Base de Datos (en deepseek hay más info sobre esto).
+                Comentario adicional: 
+                    - No verifico si el estado es entregado ya que es posible que se quiera eliminar una orden que fue cancelada o rechazada. Esto lo hago en el frontend.
+            */
+            if (!id) {
+                throw new ServerError("ID no proporcionado", 400);
+            }
+
+            if (!mongoose.Types.ObjectId.isValid(id)) {
+                throw new ServerError("ID inválido", 400);
+            }
+
+            const order = await orderRepository.getOrderById(id);
+
+            if (!order) {
+                throw new ServerError("Orden no encontrada", 404);
+            }
+
+            const orderDeleted = await orderRepository.deleteById(id);
+            return orderDeleted;
+        } catch (error) {
+            throw error;
+        }
+    }
     // Comento las funciones que no se usan por ahora
 
 /*     async updateOrder(id, orderData) {
@@ -117,14 +146,7 @@ class OrderService {
         }
     } */
 
-/*     async deleteOrder(id) {
-        try {
-            const orderDeleted = await orderRepository.delete(id);
-            return orderDeleted;
-        } catch (error) {
-            throw error;
-        }
-    } */
+
 }
 
 const orderService = new OrderService();

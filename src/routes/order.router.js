@@ -25,4 +25,10 @@ orderRouter.get(
     orderController.getOrdersByStatus
 );
 
+// Deleting order by Id
+orderRouter.delete(
+    "/:id",
+    orderController.deleteOrder
+);
+
 export default orderRouter;

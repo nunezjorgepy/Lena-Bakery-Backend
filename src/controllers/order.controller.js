@@ -148,9 +148,9 @@ class OrderController {
         const { id } = req.params;
 
         try {
-            const orderDeleted = await orderRepository.delete(id);
+            const orderDeleted = await orderService.deleteOrder(id);
             return res.status(200).json({
-                message: "Order deleted successfully",
+                message: "Pedido eliminado con éxito",
                 status: 200,
                 data: {
                     orderDeleted
