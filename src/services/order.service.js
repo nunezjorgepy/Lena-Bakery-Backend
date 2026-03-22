@@ -42,6 +42,59 @@ class OrderService {
             throw error;
         }
     }
+
+    async getAllOrders() {
+        try {
+            /* 
+                TODO: implementar sistema de posibles errores. Los posibles errores son:
+                    - role !== "admin": no tiene permiso para ver todas las ordenes.
+                    - token expirado: 
+                    - token inválido: 
+                Por ahora, esos son todos, aunque más adelante estaría bueno implementar errores de Base de Datos (en deepseek hay más info sobre esto).
+            */
+            const orders = await orderRepository.getAllOrders();
+            return orders;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    // Comento las funciones que no se usan por ahora
+/*     async getOrdersByStatus(status) {
+        try {
+            const orders = await orderRepository.getOrdersByStatus(status);
+            return orders;
+        } catch (error) {
+            throw error;
+        }
+    } */
+
+/*     async getOrderById(id) {
+        try {
+            const order = await orderRepository.getOrder(id);
+            return order;
+        } catch (error) {
+            throw error;
+        }
+    } */
+
+/*     async updateOrder(id, orderData) {
+        try {
+            const orderUpdated = await orderRepository.update(id, orderData);
+            return orderUpdated;
+        } catch (error) {
+            throw error;
+        }
+    } */
+
+/*     async deleteOrder(id) {
+        try {
+            const orderDeleted = await orderRepository.delete(id);
+            return orderDeleted;
+        } catch (error) {
+            throw error;
+        }
+    } */
 }
 
 const orderService = new OrderService();

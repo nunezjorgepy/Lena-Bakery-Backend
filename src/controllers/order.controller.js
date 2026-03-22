@@ -35,7 +35,7 @@ class OrderController {
 
     async getAllOrders(req, res) {
         try {
-            const orders = await orderRepository.getAllOrders();
+            const orders = await orderService.getAllOrders();
             return res.status(200).json({
                 message: "Orders retrieved successfully",
                 status: 200,

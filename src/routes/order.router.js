@@ -8,4 +8,9 @@ orderRouter.post(
     orderController.createOrder
 );
 
+orderRouter.get(
+    "/",
+    orderController.getAllOrders
+);
+
 export default orderRouter;

@@ -56,6 +56,13 @@ class OrderRepository {
         */
         return await this.model.find({ status });
     }
+
+    async getAllOrders() {
+        /* 
+            Busca todas las ordenes
+        */
+        return await this.model.find();
+    }
 }
 
 
