@@ -13,4 +13,10 @@ orderRouter.get(
     orderController.getAllOrders
 );
 
+// Getting order by Id
+orderRouter.get(
+    "/:id",
+    orderController.getOrderById
+);
+
 export default orderRouter;

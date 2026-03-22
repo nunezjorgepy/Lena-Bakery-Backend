@@ -48,6 +48,21 @@ class OrderRepository {
         return await this.model.findByIdAndDelete(id);
     }
 
+    async getAllOrders() {
+        /* 
+            Busca todas las ordenes
+        */
+        return await this.model.find();
+    }
+
+    async getOrderById(id) {
+        /* 
+            Busca una orden por ID
+            id es el ID de la orden a buscar
+        */
+        return await this.model.findById(id);
+    }
+
     async getOrdersByStatus(status) {
         /* 
             Busca ordenes por estado
@@ -57,12 +72,7 @@ class OrderRepository {
         return await this.model.find({ status });
     }
 
-    async getAllOrders() {
-        /* 
-            Busca todas las ordenes
-        */
-        return await this.model.find();
-    }
+
 }
 
 

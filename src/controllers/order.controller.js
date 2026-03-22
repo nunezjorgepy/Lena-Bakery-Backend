@@ -27,7 +27,7 @@ class OrderController {
 
             console.log(error);
             return res.status(500).json({
-                message: "Error creating order",
+                message: "Error al crear el pedido",
                 status: 500
             })
         }
@@ -44,10 +44,17 @@ class OrderController {
                 }
             });
         } catch (error) {
-            console.log(error);
+            if (error instanceof ServerError) {
+                return res.status(error.status).json({
+                    ok: false,
+                    status: error.status,
+                    message: error.message,
+                });
+            }
             return res.status(500).json({
-                message: "Error retrieving orders",
-                status: 500
+                ok: false,
+                status: 500,
+                message: "Error al obtener los pedidos",
             })
         }
     }
@@ -65,10 +72,17 @@ class OrderController {
                 }
             });
         } catch (error) {
-            console.log(error);
+            if (error instanceof ServerError) {
+                return res.status(error.status).json({
+                    ok: false,
+                    status: error.status,
+                    message: error.message,
+                });
+            }
             return res.status(500).json({
-                message: "Error retrieving orders",
-                status: 500
+                ok: false,
+                status: 500,
+                message: "Error al obtener los pedidos",
             })
         }
     }
@@ -77,19 +91,26 @@ class OrderController {
         const { id } = req.params;
 
         try {
-            const order = await orderRepository.getOrder(id);
+            const order = await orderService.getOrderById(id);
             return res.status(200).json({
-                message: "Order retrieved successfully",
+                message: "Pedido obtenido con éxito",
                 status: 200,
                 data: {
                     order
                 }
             });
         } catch (error) {
-            console.log(error);
+            if (error instanceof ServerError) {
+                return res.status(error.status).json({
+                    ok: false,
+                    status: error.status,
+                    message: error.message,
+                });
+            }
             return res.status(500).json({
-                message: "Error retrieving order",
-                status: 500
+                ok: false,
+                status: 500,
+                message: "Error al obtener el pedido",
             })
         }
     }
@@ -108,10 +129,17 @@ class OrderController {
                 }
             });
         } catch (error) {
-            console.log(error);
+            if (error instanceof ServerError) {
+                return res.status(error.status).json({
+                    ok: false,
+                    status: error.status,
+                    message: error.message,
+                });
+            }
             return res.status(500).json({
-                message: "Error updating order",
-                status: 500
+                ok: false,
+                status: 500,
+                message: "Error al actualizar el pedido",
             })
         }
     }
@@ -129,10 +157,17 @@ class OrderController {
                 }
             });
         } catch (error) {
-            console.log(error);
+            if (error instanceof ServerError) {
+                return res.status(error.status).json({
+                    ok: false,
+                    status: error.status,
+                    message: error.message,
+                });
+            }
             return res.status(500).json({
-                message: "Error deleting order",
-                status: 500
+                ok: false,
+                status: 500,
+                message: "Error al eliminar el pedido",
             })
         }
     }

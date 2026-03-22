@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import ServerError from "../helper/error.helper.js";
 import orderRepository from "../repository/order.repository.js";
 
@@ -59,20 +60,36 @@ class OrderService {
         }
     }
 
+    async getOrderById(id) {
+        try {
+            /* 
+                TODO: faltan unas cuantas verificaciones, pero todavía no entiendo cómo implementarlas.
+            */
+            if (!id) {
+                throw new ServerError("ID no proporcionado", 400);
+            }
+
+            if (!mongoose.Types.ObjectId.isValid(id)) {
+                throw new ServerError("ID inválido", 400);
+            }
+
+            const order = await orderRepository.getOrderById(id);
+
+            if (!order) {
+                throw new ServerError("Orden no encontrada", 404);
+            }
+
+            return order;
+        } catch (error) {
+            throw error;
+        }
+    }
+
     // Comento las funciones que no se usan por ahora
 /*     async getOrdersByStatus(status) {
         try {
             const orders = await orderRepository.getOrdersByStatus(status);
             return orders;
-        } catch (error) {
-            throw error;
-        }
-    } */
-
-/*     async getOrderById(id) {
-        try {
-            const order = await orderRepository.getOrder(id);
-            return order;
         } catch (error) {
             throw error;
         }
