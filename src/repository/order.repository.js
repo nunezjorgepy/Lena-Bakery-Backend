@@ -21,13 +21,8 @@ class OrderRepository {
         return await this.model.create(order);
     }
 
-    async updateById(id, order) {
-        /* 
-            Actualiza una orden existente
-            id es el ID de la orden a actualizar
-            order es un objeto con los datos actualizados de la orden
-        */
-        return await this.model.findByIdAndUpdate(id, order, { new: true });
+    async updateById({id, orderData}) {
+        return await this.model.findByIdAndUpdate(id, orderData, { returnDocument: 'after' });
     }
 
     async updateStatus({id, status}) {

@@ -166,16 +166,28 @@ class OrderService {
             throw error;
         }
     }
-    // Comento las funciones que no se usan por ahora
 
-/*     async updateOrder(id, orderData) {
+    async updateOrder({id, orderData}) {
         try {
-            const orderUpdated = await orderRepository.update(id, orderData);
+            if (!id) {
+                throw new ServerError("ID no proporcionado", 400);
+            }
+
+            if (!mongoose.Types.ObjectId.isValid(id)) {
+                throw new ServerError("ID inválido", 400);
+            }
+
+            const order = await orderRepository.getOrderById(id);
+            if (!order) {
+                throw new ServerError("Orden no encontrada", 404);
+            }
+
+            const orderUpdated = await orderRepository.updateById({id, orderData});
             return orderUpdated;
         } catch (error) {
             throw error;
         }
-    } */
+    }
 
 
 }

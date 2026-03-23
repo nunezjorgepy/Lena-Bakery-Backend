@@ -37,4 +37,10 @@ orderRouter.put(
     orderController.updateOrderStatus
 );
 
+// Updating order by Id
+orderRouter.put(
+    "/:id",
+    orderController.updateOrder
+);
+
 export default orderRouter;

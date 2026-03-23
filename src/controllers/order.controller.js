@@ -115,34 +115,7 @@ class OrderController {
         }
     }
 
-    async updateOrder(req, res) {
-        const { id } = req.params;
-        const order = req.body;
 
-        try {
-            const orderUpdated = await orderRepository.update(id, order);
-            return res.status(200).json({
-                message: "Order updated successfully",
-                status: 200,
-                data: {
-                    orderUpdated
-                }
-            });
-        } catch (error) {
-            if (error instanceof ServerError) {
-                return res.status(error.status).json({
-                    ok: false,
-                    status: error.status,
-                    message: error.message,
-                });
-            }
-            return res.status(500).json({
-                ok: false,
-                status: 500,
-                message: "Error al actualizar el pedido",
-            })
-        }
-    }
 
     async deleteOrder(req, res) {
         const { id } = req.params;
@@ -168,6 +141,37 @@ class OrderController {
                 ok: false,
                 status: 500,
                 message: "Error al eliminar el pedido",
+            })
+        }
+    }
+
+    async updateOrder(req, res) {
+        const { id } = req.params;
+        const order = req.body;
+
+        try {
+            const orderUpdated = await orderService.updateOrder({id, orderData: order});
+            return res.status(200).json({
+                message: "Order updated successfully",
+                status: 200,
+                data: {
+                    orderUpdated
+                }
+            });
+        } catch (error) {
+            if (error instanceof ServerError) {
+                return res.status(error.status).json({
+                    ok: false,
+                    status: error.status,
+                    message: error.message,
+                });
+            }
+
+            console.log(error);
+            return res.status(500).json({
+                ok: false,
+                status: 500,
+                message: "Error al actualizar el pedido",
             })
         }
     }
