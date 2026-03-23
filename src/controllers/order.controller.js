@@ -172,6 +172,35 @@ class OrderController {
         }
     }
 
+    async updateOrderStatus(req, res) {
+        const { id } = req.params;
+        const { status } = req.body;
+
+        try {
+            const orderUpdated = await orderService.updateOrderStatus({id, status});
+            return res.status(200).json({
+                message: "Pedido actualizado con éxito",
+                status: 200,
+                data: {
+                    status: orderUpdated.status
+                }
+            });
+        } catch (error) {
+            if (error instanceof ServerError) {
+                return res.status(error.status).json({
+                    ok: false,
+                    status: error.status,
+                    message: error.message,
+                });
+            }
+            return res.status(500).json({
+                ok: false,
+                status: 500,
+                message: "Error al actualizar el pedido",
+            })
+        }
+    }
+
 }
 
 const orderController = new OrderController();

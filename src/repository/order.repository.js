@@ -30,13 +30,13 @@ class OrderRepository {
         return await this.model.findByIdAndUpdate(id, order, { new: true });
     }
 
-    async updateState(id, status) {
+    async updateStatus({id, status}) {
         /* 
             Actualiza el estado de una orden existente
             id es el ID de la orden a actualizar
             status es el nuevo estado de la orden
         */
-        return await this.model.findByIdAndUpdate(id, { status }, { new: true });
+        return await this.model.findByIdAndUpdate(id, { status }, { returnDocument: 'after' });
     }
 
     async deleteById(id) {

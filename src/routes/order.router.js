@@ -31,4 +31,10 @@ orderRouter.delete(
     orderController.deleteOrder
 );
 
+// Updating order status by Id
+orderRouter.put(
+    "/:id/status",
+    orderController.updateOrderStatus
+);
+
 export default orderRouter;

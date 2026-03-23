@@ -135,6 +135,37 @@ class OrderService {
             throw error;
         }
     }
+
+    async updateOrderStatus({id, status}) {
+        try {
+            if (!id) {
+                throw new ServerError("ID no proporcionado", 400);
+            }
+
+            if (!mongoose.Types.ObjectId.isValid(id)) {
+                throw new ServerError("ID inválido", 400);
+            }
+
+            if (!status) {
+                throw new ServerError("Estado no proporcionado", 400);
+            }
+
+            if (!ORDER_STATUS_OPTIONS.includes(status)) {
+                throw new ServerError("Estado inválido", 400);
+            }
+
+            const order = await orderRepository.getOrderById(id);
+
+            if (!order) {
+                throw new ServerError("Orden no encontrada", 404);
+            }
+
+            const orderUpdated = await orderRepository.updateStatus({id, status});
+            return orderUpdated;
+        } catch (error) {
+            throw error;
+        }
+    }
     // Comento las funciones que no se usan por ahora
 
 /*     async updateOrder(id, orderData) {
