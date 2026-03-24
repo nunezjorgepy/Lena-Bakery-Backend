@@ -131,7 +131,21 @@ class AuthService {
             user.password = undefined;
 
             // Generate a token
-            const login_token = jwt.sign({ user }, ENVIRONMENT.JWT_SECRET, { expiresIn: "1h" });
+            const login_token = jwt.sign({
+                    id: user._id,
+                    name: user.name,
+                    lastName: user.lastName,
+                    email: user.email,
+                    role: user.role,
+                    phone: user.phone,
+                    address: user.address,
+                    birthDate: user.birthDate,
+                    isActive: user.isActive,
+                    isVerified: user.isVerified,
+                }, 
+                ENVIRONMENT.JWT_SECRET, 
+                { expiresIn: "1h" }
+            );
             return { user, login_token };
         } catch (error) {
             throw error;
