@@ -10,6 +10,10 @@ class AuthService {
     async registerUser(userData) {
         try {
             // TODO: Debería verificar que toda la data necesaria fue enviada, pero esto lo hago en otro momento con un middleware.
+            // Verificar que password y confirmPassword sean iguales
+            if (userData.password !== userData.confirmPassword) {
+                throw new ServerError("Las contraseñas no coinciden", 400);
+            }
             /* Buscar al usuario por email y, si existe, devolver un error con status 400 */
             const userByEmail = await userRepository.getByEmail(userData.email);
             if (userByEmail) {

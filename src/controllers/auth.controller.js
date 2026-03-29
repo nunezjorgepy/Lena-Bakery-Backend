@@ -46,7 +46,9 @@ class AuthController {
             return res.status(200).json({
                 message: "Usuario logueado con éxito",
                 status: 200,
-                login_token
+                data: {
+                    login_token
+                }
             });
             
             
