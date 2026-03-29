@@ -104,6 +104,11 @@ class AuthService {
 
     async loginUser(userData) {
         try {
+            // Verificar que haya enviado la información necesaria
+            if (!userData.email || !userData.password) {
+                throw new ServerError("Email y contraseña son obligatorios", 400);
+            }
+
             // Find the user by email
             const user = await userRepository.getByEmail(userData.email).select("+password");
 
