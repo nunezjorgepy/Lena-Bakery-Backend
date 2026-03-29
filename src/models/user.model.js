@@ -89,7 +89,6 @@ const userSchema = new mongoose.Schema({
         floor: {
             type: String,
             trim: true,
-            minlength: [1, "El número de piso debe tener al menos 1 dígito."],
             maxlength: [10, "El número de piso debe tener como máximo 10 dígitos."],
             match: [/^[0-9]+[A-Za-z]?$/, 'El piso debe ser un número válido'],
             default: '0',
