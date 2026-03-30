@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 
+// TODO: crear una colección de ingredientes para pasarlos como parámetros. de esta manera, puedo agregar o quitar ingredientes de forma más sencilla.
+
 const productSchema = new mongoose.Schema({
     /* TODO: photo tendría que se una lista de fotos */
     main_photo: {
@@ -76,15 +78,10 @@ const productSchema = new mongoose.Schema({
             type: String,
             required: [true, 'El nombre del componente nutricional es obligatorio'],
             trim: true,
-            enum: {
-                values: [
-                'Calorías', 'Proteínas', 'Grasas Totales', 'Grasas Saturadas', 
-                'Grasas Trans', 'Carbohidratos', 'Azúcares', 'Fibra', 'Sodio',
-                'Colesterol', 'Vitamina A', 'Vitamina C', 'Calcio', 'Hierro',
-                'Potasio', 'Magnesio', 'Zinc', 'Vitamina D', 'Vitamina B12'
-                ],
+            /* enum: {
+                values: nutritional_information_enum,
                 message: '{VALUE} no es un componente nutricional válido'
-            }
+            } */
         },
         quantity: {
             type: Number,
@@ -130,12 +127,6 @@ const productSchema = new mongoose.Schema({
     }
     // TODO: cómo revisar si hay algún producto que tenga menos de una semana para el pop-up
 })
-
-// Actualizar updated_at
-productSchema.pre('save', function(next) {
-    this.updated_at = Date.now();
-    next();
-});
 
 const Product = mongoose.model('Product', productSchema);
 
