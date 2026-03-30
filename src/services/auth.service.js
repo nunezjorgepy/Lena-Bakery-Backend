@@ -121,15 +121,15 @@ class AuthService {
                 throw new ServerError("Usuario no encontrado", 401);
             }
 
+            // Verifico si el usuario esta activo
+            if (!user.isActive) {
+                throw new ServerError("Usuario inactivo", 403);
+            }
+
             // Compare the password
             const isPasswordValid = await bcrypt.compare(userData.password, user.password);
             if (!isPasswordValid) {
                 throw new ServerError("Contraseña incorrecta", 401);
-            }
-
-            // Verifico si el usuario esta activo
-            if (!user.isActive) {
-                throw new ServerError("Usuario inactivo", 403);
             }
 
             // Verifico si el usuario esta verificado

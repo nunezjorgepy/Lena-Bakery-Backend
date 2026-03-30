@@ -76,11 +76,7 @@ class AuthController {
         try {
             await authService.verifyEmail({ verification_token });
 
-            return res.status(200).json({
-                ok: true,
-                message: "Email verificado con éxito",
-                status: 200,
-            });
+            return res.status(200).send("Email verificado con éxito");
         } catch (error) {
             console.log(error);
             if (error instanceof ServerError) {

@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 
 // TODO: crear una colección de ingredientes para pasarlos como parámetros. de esta manera, puedo agregar o quitar ingredientes de forma más sencilla.
 
+// TODO 2: la porción de referencia debería ser un campo separado. De esta forma, no repito el mismo par valor-llave para cada componente nutricional.
+
 const productSchema = new mongoose.Schema({
     /* TODO: photo tendría que se una lista de fotos */
     main_photo: {
@@ -44,7 +46,6 @@ const productSchema = new mongoose.Schema({
             trim: true,
             minlength: [3, 'El nombre debe tener al menos 3 caracteres'],
             maxlength: [100, 'El nombre no puede exceder los 100 caracteres'],
-            unique: true, // Asumiendo que los nombres de ingredientes son únicos
         },
         quantity: {
             type: Number,
