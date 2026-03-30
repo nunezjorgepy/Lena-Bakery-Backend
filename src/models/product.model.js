@@ -131,6 +131,12 @@ const productSchema = new mongoose.Schema({
     // TODO: cómo revisar si hay algún producto que tenga menos de una semana para el pop-up
 })
 
+// Actualizar updated_at
+productSchema.pre('save', function(next) {
+    this.updated_at = Date.now();
+    next();
+});
+
 const Product = mongoose.model('Product', productSchema);
 
 export default Product;
